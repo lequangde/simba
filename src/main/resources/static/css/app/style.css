@@ -1,0 +1,222 @@
+@charset "UTF-8";
+
+body, html {
+	height: 100%;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.btn{
+	position: relative;
+    left: -17%;
+    top: -34%;
+    color: rgb(128, 255, 255) !important;
+    font-size: 1.3rem;
+}
+
+body {
+	background-image: url('/images/backgrounds/background-content.png');
+	/* Replace 'your-background-image.jpg' with the path to your background image */
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: 100% 100%;
+}
+
+.rating-container {
+	display: flex;
+	justify-content: center; /* Center-align horizontally */
+	align-items: center; /* Center-align vertically */
+	text-align: center; /* Center-align text */
+}
+
+.btn-gr {
+	display: flex;
+	justify-content: center; /* Center-align horizontally */
+	margin-top: 5%;
+}
+
+/* Rating star */
+@import
+	url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap")
+	;
+
+.stars i, .stars2 i {
+	color: #e6e6e6;
+	cursor: pointer;
+	transition: color 0.2 ease;
+	font-size: 1.1rem;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+.stars i.active {
+	color: #ff9c1a;
+}
+
+.stars2 i.active {
+	color: #ff9c1a;
+}
+
+.rating-box {
+	margin-left: 40px;
+}
+
+.stars i, .stars2 i {
+	font-size: 3rem;
+	margin-left: 14px;
+	margin-right: 14px;
+}
+
+.star-rate1{
+	margin-bottom: 50px;
+}
+
+.ml {
+	margin-left: 30px;
+}
+
+.three {
+	-webkit-animation-delay: 0.3s;
+	-moz-animation-delay: 0.3s;
+	animation-delay: 0.3s;
+}
+
+.animate {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	animation-fill-mode: both;
+	-webkit-animation-fill-mode: both;
+}
+
+
+@-webkit-keyframes fadeDown {from { opacity:0;
+	-webkit-transform: translate3d(0, -100%, 0);
+	transform: translate3d(0, -100%, 0);
+}
+
+to {
+	opacity: 1;
+	-webkit-transform: none;
+	transform: none;
+}
+
+}
+
+@keyframes fadeDown {from { opacity:0;
+	-webkit-transform: translate3d(0, -100%, 0);
+	transform: translate3d(0, -100%, 0);
+}
+
+to {
+	opacity: 1;
+	-webkit-transform: none;
+	transform: none;
+}
+
+}
+.fadeDown {
+	-webkit-animantion-name: fadeDown;
+	animation-name: fadeDown;
+}
+
+@media only screen and (max-width: 1280px) and (max-height: 900px) {
+	/* Adjustments for tablets */
+	.rating-box {
+		margin-left: 0; /* Reset margin for rating box */
+		margin-left: 50px; /* Add some margin from the top */
+	}
+	.stars i, .stars2 i {
+		font-size: 3rem; /* Reduce star size for smaller screens */
+		margin-left: 8px; /* Adjust margin between stars */
+		margin-right: 8px;
+	}
+	.text-index2 {
+		font-size: 2rem;
+	}
+	.h-content {
+		font-size: 3.4rem !important;
+		margin-bottom: 30px !important;
+		font-weight: 700;
+	}
+	
+	.btn{
+		font-size: 2rem!important;
+	}
+	
+}
+
+@media only screen and (max-width: 900px) and (max-height: 400px) {
+	.stars i, .stars2 i {
+		font-size: 2rem; /* Adjust star size for iPhones */
+		margin-left: 8px; /* Adjust margin between stars */
+		margin-right: 8px;
+	}
+	.text-index2 {
+		font-size: 1.5rem; /* Adjust font size for iPhones */
+	}
+	.h-content {
+		font-size: 2rem !important; /* Adjust font size for iPhones */
+		margin-bottom: 10px !important;
+	}
+	body {
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-size: 100% 100%;
+	}
+	.text-warning, .stars i, .stars2 i{
+		font-size: 1.5rem !important;
+	}
+	.rating-container {
+		display: flex;
+		justify-content: center; /* Center-align horizontally */
+		align-items: center; /* Center-align vertically */
+		text-align: center; /* Center-align text */
+	}
+	
+	.img{
+		width: 50%;
+		margin-top: 0;
+	}
+	
+	.star-rate1{
+		margin-bottom: 50px;
+	}
+	
+	.btn{
+		font-size: 1.5rem!important;
+	}
+}
+
+.button {
+	border: none;
+	background-color: rgb(19, 96, 50);
+}
+
+.text-index2 {
+	font-size: 2rem;
+}
+
+.text-warning{
+	font-size: 2rem;
+}
+
+.h-content{
+	color: #ffc107;
+	align-items: center;
+	font-size: 3.4rem;
+	font-weight: 700;
+	margin-bottom: 30px;
+}
+
+.criteria{
+	height: 33% !important;
+    width: 6% !important;
+}
+
+

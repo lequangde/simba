@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div th:fragment="bodyLeft">
+
+		<aside class="left-sidebar">
+			<!-- Sidebar scroll-->
+			<div>
+				<div
+					class="brand-logo d-flex align-items-center justify-content-between">
+					<a  class="text-nowrap logo-img"> <img
+						src="/images/logos/logo.png" width="100" alt="" />
+					</a>
+					<div
+						class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
+						id="sidebarCollapse">
+						<i class="ti ti-x fs-8"></i>
+					</div>
+				</div>
+				<!-- Sidebar navigation-->
+				<nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+					<ul id="sidebarnav">
+						<li class="nav-small-cap"><i
+							class="ti ti-dots nav-small-cap-icon fs-4"></i> <span
+							class="hide-menu">Home</span></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link text-decoration-none" th:href="@{/home/dashboard}"
+							aria-expanded="false"> <span> <i
+									class="ti ti-layout-dashboard"></i>
+							</span> <span class="hide-menu">Trang chủ</span>
+						</a></li>
+						<li class="nav-small-cap"><i
+							class="ti ti-dots nav-small-cap-icon fs-4"></i> <span
+							class="hide-menu">Quản lí ứng dụng</span></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link text-decoration-none"
+							th:href="@{/app/infoRate}" aria-expanded="false"> <span>
+									<i class="ti ti-alert-circle"></i>
+							</span> <span class="hide-menu">Tổng hợp chi tiết</span>
+						</a></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link text-decoration-none"
+							th:href="@{/excel/exportPage}" aria-expanded="false"> <span>
+									<i class="fa-solid fa-file-excel"></i>
+							</span> <span class="hide-menu">Xuất file excel</span>
+						</a></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link text-decoration-none" th:href="@{/qr/home}"
+							aria-expanded="false"> <span> <i class="fa-solid fa-qrcode"></i>
+							</span> <span class="hide-menu">Qr đánh giá</span>
+						</a></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link text-decoration-none" th:href="@{/criteria/home}"
+							aria-expanded="false"> <span> <i class="fa-solid fa-star"></i>
+							</span> <span class="hide-menu">Đánh giá tiêu chí phụ</span>
+						</a></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link text-decoration-none"
+							th:href="@{/app/rating}" aria-expanded="false"> <span>
+									<i class="ti ti-article"></i>
+							</span> <span class="hide-menu">App đánh giá dịch vụ</span>
+						</a></li>
+						<li class="nav-small-cap"><i
+							class="ti ti-dots nav-small-cap-icon fs-4"></i> <span
+							class="hide-menu">Tài khoản</span></li>
+						<li class="sidebar-item mb-5"><a
+							class="sidebar-link text-decoration-none"
+							th:href="@{/auth/register}" aria-expanded="false"> <span>
+									<i class="ti ti-user-plus"></i>
+							</span> <span class="hide-menu">Tạo tài khoản</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+	</div>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/admin_template::areas(~{::title}, ~{::link}, ~{::#content_title}, ~{::main},~{::script})}">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trang chủ</title>
+<link rel="shortcut icon" type="image/png"
+	th:href="@{/images/logos/logo.png}" />
+
+<link rel="stylesheet" th:href="@{/css/dashboard/dashboardTemplate.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+
+<body>
+	<main>
+		<!--  Body Wrapper -->
+		<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
+			data-navbarbg="skin6" data-sidebartype="full"
+			data-sidebar-position="fixed" data-header-position="fixed">
+
+			<div class="container-fluid">
+				<!--  Row 1 -->
+				<div class="row">
+					<div class="col-lg-8 d-flex align-items-strech">
+						<div class="card w-100">
+							<div class="card-body">
+								<div
+									class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+									<div class="mb-3 mb-sm-0">
+										<h5 class="card-title fw-semibold">Tổng quan CHB Food</h5>
+										<!--  
+										<div th:disabled="${admin}">
+											<a id="exportButton" th:href="@{/export}">Export excel</a>
+										</div>
+										-->
+									</div>
+									<div class="d-grid">
+										<form id="countryForm" th:action="@{/home/selected-country}"
+											method="post">
+											<div class="navbar-selection mt-3 mb-3 d-flex">
+												<div class="wrapperr" id="wrapper">
+													<div class="select-btn">
+														<span>Chọn cơ sở...</span> <i class="uil uil-angle-down"></i>
+													</div>
+													<div class="content">
+														<div class="search">
+															<i class="uil uil-search"></i> <input spellcheck="false"
+																type="text" placeholder="Tìm kiếm..">
+														</div>
+														<ul class="options">
+
+														</ul>
+													</div>
+												</div>
+												<a class="reset" th:href="@{/home/dashboard}"> <i
+													class="fa-solid fa-retweet"></i>
+												</a>
+
+											</div>
+											<input type="hidden" name="selectedCountry"
+												id="selectedCountryInput">
+										</form>
+										<form th:action="@{/home/date}" method="post" id="dateForm">
+											<input type="date" name="dateSelect"
+												class="form-control select-calendar" id="dateInput" />
+										</form>
+									</div>
+								</div>
+								<div id="chartDashboard"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="row">
+							<div class="col-lg-12">
+								<!-- Yearly Breakup  -->
+
+								<div class="card overflow-hidden">
+									<div class="card-body p-4">
+										<div class="d-flex">
+											<h5 class="card-title mb-9 fw-semibold">Thống kê theo
+												ngày</h5>
+											<h5 class="date-select" style="margin-left: 20px;"
+												th:text="${selectedDate}"></h5>
+
+										</div>
+										<h5 class="card-title mb-9 fw-semibold"
+											style="margin-left: 20px;" th:text="${totalRatingByDay}"></h5>
+										<div class="row align-items-center">
+											<div class="col-12">
+												<div class="d-flex align-items-center mb-3">
+													<span
+														class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+														<i class="ti ti-arrow-up-left text-success"></i>
+													</span>
+													<p class="text-dark me-1 fs-3 mb-0">Danh sách cơ sở:</p>
+												</div>
+												<div class="d-grid align-items-center">
+													<div class="me-4"
+														th:each="result : ${resultsRateWithEachDepartment}">
+														<span
+															class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
+														<span class="fs-3 text-dark" th:text="${result[0]}"></span>:
+														<span class="fs-3 text-dark ml-2 mr-1"
+															th:text="${result[1]}"></span> <span
+															th:if="${result[1] < 50}" class="icon-class"> <i
+															class="fa-sharp fa-solid fa-triangle-exclamation fs-3"
+															style="color: #dc0909;"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+											<!-- 
+											<div class="col-4">
+												<div class="d-flex justify-content-center">
+													<div id="breakup"></div>
+												</div>
+											</div>
+											 -->
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-lg-12">
+								<!-- Monthly Earnings -->
+								<div class="card">
+									<div class="card-body">
+										<div class="row alig n-items-start">
+											<div class="col-8">
+												<h5 class="card-title mb-9 fw-semibold">Thống kê theo
+													tuần</h5>
+												<h4 class="fw-semibold mb-3">...</h4>
+												<div class="d-flex align-items-center pb-1">
+													<span
+														class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+														<i class="ti ti-arrow-down-right text-danger"></i>
+													</span>
+													<p class="text-dark me-1 fs-3 mb-0">..%</p>
+													<p class="fs-3 mb-0">...</p>
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="d-flex justify-content-end">
+													<div
+														class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+														<i class="ti ti-currency-dollar fs-6"></i>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="earning"></div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 d-flex align-items-stretch">
+						<div class="card w-100">
+							<div class="card-body p-4">
+								<div>
+									<h5 class="card-title fw-semibold mt-2 mb-3">Tiêu chí đánh
+										giá món ăn theo lượt</h5>
+									<div class="d-flex justify-content-between">
+										<div>
+											<h5 class="text-danger">Đánh giá 1 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterFood1Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span> <i
+													class="fa-sharp fa-solid fa-triangle-exclamation fs-3"
+													style="color: #dc0909;"></i>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-danger">Đánh giá 2 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterFood2Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span> <i
+													class="fa-sharp fa-solid fa-triangle-exclamation fs-3"
+													style="color: #dc0909;"></i>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-warning">Đánh giá 3 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterFood3Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-success">Đánh giá 4 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterFood4Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-success">Đánh giá 5 sao</h5>
+											<div class="mb-1">
+												<span class="star_info"> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i>
+												</span>
+											</div>
+											<div th:each="result : ${filterFood5Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<h5 class="card-title fw-semibold mt-2 mb-3">Tiêu chí đánh
+										giá phục vụ theo lượt</h5>
+									<div class="d-flex justify-content-between">
+										<div>
+											<h5 class="text-danger">Đánh giá 1 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterService1Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span> <i
+													class="fa-sharp fa-solid fa-triangle-exclamation fs-3"
+													style="color: #dc0909;"></i>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-danger">Đánh giá 2 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterService2Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span> <i
+													class="fa-sharp fa-solid fa-triangle-exclamation fs-3"
+													style="color: #dc0909;"></i>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-warning">Đánh giá 3 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterService3Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-success">Đánh giá 4 sao</h5>
+											<span class="star_info"> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+												style="color: #FFD43B;"></i>
+											</span>
+											<div th:each="result : ${filterService4Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span>
+											</div>
+										</div>
+
+										<div>
+											<h5 class="text-success">Đánh giá 5 sao</h5>
+											<div class="mb-1">
+												<span class="star_info"> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i> <i class="fa-solid fa-star"
+													style="color: #FFD43B;"></i>
+												</span>
+											</div>
+											<div th:each="result : ${filterService5Star}">
+												<span class="fs-3 text-dark fw-bold" th:text="${result[0]}"></span>:
+												<span class="fs-4 text-dark fw-bold mr-1 ml-1"
+													th:text="${result[1]}"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div></div>
+								<h5 class="card-title fw-semibold mt-2 mb-3">Chi tiết đánh
+									giá ngày hôm nay</h5>
+								<h5 class="mb-3">
+									Tổng lượt đánh giá: <span th:text="${totalRatingByDay}"></span>
+								</h5>
+								<div class="d-flex">
+
+									<div class="rating-block">
+										<span>--------- Món ăn:</span>
+										<div class="mb-1">
+											+ 5 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood5}"></span>
+										</div>
+										<div class="mb-1">
+											+ 4 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood4}"></span>
+										</div>
+										<div class="mb-1">
+											+ 3 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood3}"></span>
+										</div>
+										<div class="mb-1">
+											+ 2 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood2}"></span>
+										</div>
+
+										<div class="mb-1">
+											+ 1 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood1}"></span>
+										</div>
+									</div>
+
+									<div class="rating-block">
+										<span>------- Phục vụ:</span>
+										<div class="mb-1">
+											+ 5 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService5}"></span>
+										</div>
+										<div class="mb-1">
+											+ 4 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService4}"></span>
+										</div>
+										<div class="mb-1">
+											+ 3 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService3}"></span>
+										</div>
+										<div class="mb-1">
+											+ 2 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService2}"></span>
+										</div>
+										<div class="mb-1">
+											+ 1 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService1}"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="py-6 px-6 text-center">
+					<p class="mb-0 fs-4">
+						Design Fullstack and Developed by <label class="text-info">Trần
+							Huy Hoàng</label>
+					</p>
+				</div>
+			</div>
+		</div>
+		<script th:src="@{/js/system/infor_star.js}"></script>
+		<script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>
+		<script th:src="@{/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+		<script th:src="@{/js/sidebarmenu.js}"></script>
+		<script th:src="@{/js/app.min.js}"></script>
+		<script th:src="@{/libs/apexcharts/dist/apexcharts.min.js}"></script>
+		<script th:src="@{/libs/simplebar/dist/simplebar.js}"></script>
+		<script th:src="@{/js/dashboard/dashboardSelect.js}"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	</main>
+</body>
+
+</html>

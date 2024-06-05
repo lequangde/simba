@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/admin_template::areas(~{::title}, ~{::link}, ~{::#content_title}, ~{::main},~{::script})}">
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/excel/excel.css}">
+</head>
+
+<body>
+
+	<main>
+		<h1 class="mb-5">Kết quả đánh giá CHB</h1>
+		<!--  -->
+		<div class="col-lg-10">
+			<form id="countryForm" class="mb-4" th:action="@{/excel/report}"
+				method="post" onsubmit="submitForm(event, 'view')">
+				<div class="navbar-selection mt-3 mb-4 d-flex">
+					<div class="wrapperr" id="wrapper">
+						<div class="select-btn">
+							<span>Chọn cơ sở...</span> <i class="uil uil-angle-down"></i>
+						</div>
+						<div class="content">
+							<div class="search">
+								<i class="uil uil-search"></i> <input spellcheck="false"
+									type="text" placeholder="Tìm kiếm..">
+							</div>
+							<ul class="options">
+
+							</ul>
+						</div>
+					</div>
+					<i class="fa-solid fa-retweet reset" onClick="refreshPage()"></i> <select
+						id="dateSelector" class="form-select ml-5">
+						<option disabled selected value="">Tùy chọn</option>
+						<option id="currentDate" value="currentDate">Ngày hôm nay</option>
+						<option value="currentWeek">Tuần này</option>
+						<option id="currentMonth" value="currentMonth">Tháng này</option>
+					</select>
+
+				</div>
+				<input type="hidden" name="selectedCountry"
+					id="selectedCountryInput">
+				<div class="d-flex justify-content-between w-60">
+					<label class="fw-bold fs-5">Từ ngày</label> <label
+						class="fw-bold fs-5">Tới ngày</label>
+				</div>
+				<div class="d-flex justify-content-between w-60">
+					<input id="startDate" type="date" class="form-control date"
+						name="startDate" required> <input id="endDate" type="date"
+						class="form-control date" name="endDate" required>
+				</div>
+				<button class="btn btn-primary mt-5 mr-4" type="submit">Xem
+					báo cáo</button>
+				<button class="btn btn-primary mt-5 " type="submit"
+					onclick="submitForm(event, 'download')">Tải xuống</button>
+			</form>
+
+			<table class="table table-bordered">
+
+				<thead>
+					<tr>
+						<th>Mã đánh giá</th>
+						<th>Cơ sở</th>
+						<th>Đánh giá món ăn</th>
+						<th>Đánh giá phục vụ</th>
+						<th>Thời gian</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<!--
+						<tr th:each="d, status : ${pageStar}">
+							<td th:text="${d.rateId}"></td>
+							<td th:text="${d.department}"></td>
+							<td th:text="${d.valueFood}"></td>
+							<td th:text="${d.valueService}"></td>
+							<td th:text="${d.dateRate}"></td>
+						</tr>
+						-->
+				</tbody>
+
+			</table>
+		</div>
+		<script th:src="@{/js/excel/excel.js}"></script>
+	</main>
+
+</body>
+
+</html>

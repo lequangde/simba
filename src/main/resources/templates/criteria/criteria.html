@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/admin_template::areas(~{::title}, ~{::link}, ~{::#content_title}, ~{::main},~{::script})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/criteria/criteria.css}">
+</head>
+<body>
+	<main>
+		<h2 class="mb-5 content-title" id="content_title">Thông tin đánh
+			giá tiêu chí phụ</h2>
+		<form id="countryForm" class="mb-4" th:action="@{/criteria/reported}"
+			method="post">
+			<div class="navbar-selection mt-3 mb-4 d-flex">
+					<div class="wrapperr" id="wrapper">
+						<div class="select-btn">
+							<span>Chọn cơ sở...</span> <i class="uil uil-angle-down"></i>
+						</div>
+						<div class="content">
+							<div class="search">
+								<i class="uil uil-search"></i> <input spellcheck="false"
+									type="text" placeholder="Tìm kiếm..">
+							</div>
+							<ul class="options">
+
+							</ul>
+						</div>
+					</div>
+					<i class="fa-solid fa-retweet reset" onClick="refreshPage()"></i> <select
+						id="dateSelector" class="form-select ml-5">
+						<option disabled selected value="">Tùy chọn</option>
+						<option id="currentDate" value="currentDate">Ngày hôm nay</option>
+						<option value="currentWeek">Tuần này</option>
+						<option id="currentMonth" value="currentMonth">Tháng này</option>
+					</select>
+
+				</div>
+				<input type="hidden" name="selectedCountry"
+					id="selectedCountryInput">
+				<div class="d-flex justify-content-between w-60">
+					<label class="fw-bold fs-5">Từ ngày</label> <label
+						class="fw-bold fs-5">Tới ngày</label>
+				</div>
+				<div class="d-flex justify-content-between w-60">
+					<input id="startDate" type="date" class="form-control date"
+						name="startDate" required> <input id="endDate" type="date"
+						class="form-control date" name="endDate" required>
+				</div>
+				<button class="btn btn-primary mt-5 mr-4" type="submit">Xem
+					báo cáo</button>
+		</form>
+		<table class="table table-bordered">
+
+			<thead>
+				<tr>
+					<th>Mã đánh giá tiêu chí phụ</th>
+					<th>Cơ sở</th>
+					<th>Đánh giá món ăn</th>
+					<th>Đánh giá phục vụ</th>
+					<th>Thời gian</th>
+					<th colspan="4">Tiêu chí phụ</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				
+			</tbody>
+
+		</table>
+		<h3>Tiêu chí phụ:</h3>
+		<span class="fw-bold fs-5 mb-1">1. Chất lượng món ăn/đồ uống</span> <br>
+		<span class="fw-bold fs-5 mb-1">2. Giá cả món ăn/đồ uống?</span> <br>
+		<span class="fw-bold fs-5 mb-1">3. Nhân viên phục vụ không tốt?</span>
+		<br> <span class="fw-bold fs-5">4. Bạn phải đợi lâu khi
+			gọi món/thanh toán?</span>
+
+		<script th:src="@{/js/criteria/criteria.js}"></script>
+	</main>
+</body>
+</html>

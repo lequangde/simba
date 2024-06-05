@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/admin_template::areas(~{::title}, ~{::link}, ~{::#content_title}, ~{::main},~{::script})}">
+<head>
+<meta charset="UTF-8">
+<title>Star rate information</title>
+</head>
+<body>
+	<h1 id="content_title">ssss</h1>
+	<main>
+		<div>
+			<div class="dashboard-container">
+				<!-- Tables -->
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="table">
+							<h3>Thông tin đánh giá cơ sở</h3>
+							<table class="table table-bordered">
+
+								<thead>
+									<tr>
+										<th>Mã đánh giá</th>
+										<th>Cơ sở</th>
+										<th>Đánh giá món ăn</th>
+										<th>Đánh giá phục vụ</th>
+										<th>Thời gian</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr th:each="d, status : ${pageStar}">
+										<td th:text="${d.rateId}"></td>
+										<td>57 Trần Xuân Soạn</td>
+										<td th:text="${d.valueFood}"></td>
+										<td th:text="${d.valueService}"></td>
+										<td th:text="${d.dateRate}"></td>
+									</tr>
+								</tbody>
+
+							</table>
+							<ul class="pagination">
+							<li class="page-item" th:if="${pageStar.totalPages != 0}" th:attr="class=${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+								<a  th:href="@{'/home/infoRate?pageNum=' + ${currentPage - 1}}"
+									class="page-link">
+									<</a>
+							</li>
+							<th:block th:each="i: ${#numbers.sequence(1, pageStar.totalPages)}">
+								<li  th:if="${pageStar.totalPages != 0}" th:attr="class=${pageStar.totalPages == 0 ? 'page-item disabled' : 'page-item'}">
+									<a th:attr="class=${i == currentPage ? 'page-link text-danger' : 'page-link'}"
+										th:href="@{'/home/infoRate?pageNum=' + ${i}}"
+										th:text="${i}"></a>
+								</li>
+							</th:block>
+							<li class="page-item"
+								th:if="${pageStar.totalPages != 0}" th:attr="class=${currentPage < pageStar.totalPages ? 'page-item' : 'page-item disabled'}">
+								<a  th:href="@{'/home/infoRate?pageNum=' + ${currentPage + 1}}"
+									class="page-link">></a>
+							</li>
+						</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/admin_template::areas(~{::title}, ~{::link}, ~{::#content_title}, ~{::main},~{::script})}">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trang chủ</title>
+<link rel="shortcut icon" type="image/png"
+	th:href="@{/images/logos/logo.png}" />
+<link rel="stylesheet" th:href="@{/css/dashboard/dashboard.css}">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+
+<body>
+	<main>
+		<!--  Body Wrapper -->
+		<div class="page-wrapper" id="main-wrapper" data-layout="vertical" s
+			data-navbarbg="skin6" data-sidebartype="full"
+			data-sidebar-position="fixed" data-header-position="fixed">
+			<div class="container-fluid">
+				<!--  Row 1 -->
+				<div class="row">
+					<div class="col-lg-6 d-flex align-items-strech">
+						<div class="card w-100">
+							<div class="card-body">
+								<div
+									class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+									<div class="mb-3 mb-sm-0">
+										<h5 class="card-title fw-semibold">Tổng quan CHB Food</h5>
+									</div>
+									<div id="role" th:value="${isAdmin}"></div>
+									<div class="d-grid">
+										<form id="countryForm" th:action="@{/home/selected-country}"
+											method="post">
+											<div id="content-select"
+												class="navbar-selection mt-3 mb-3 d-flex ">
+												<div class="wrapperr" id="wrapper">
+													<div class="select-btn">
+														<span>Chọn cơ sở...</span> <i class="uil uil-angle-down"></i>
+													</div>
+													<div class="content dashboard-css">
+														<div class="search">
+															<i class="uil uil-search"></i> <input spellcheck="false"
+																type="text" placeholder="Tìm kiếm..">
+														</div>
+														<ul class="options">
+
+														</ul>
+													</div>
+												</div>
+												<a class="reset" th:href="@{/home/dashboard}"> <i
+													class="fa-solid fa-retweet"></i>
+												</a>
+
+											</div>
+											<input type="hidden" name="selectedCountry"
+												id="selectedCountryInput">
+										</form>
+										<form th:action="@{/home/date}" method="post" id="dateForm">
+											<input type="date" name="dateSelect"
+												class="form-control select-calendar" id="dateInput" />
+										</form>
+									</div>
+								</div>
+								<div id="chart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<div class="row">
+							<div class="col-lg-12">
+								<!-- Yearly Breakup    -->
+								<div class="card overflow-hidden">
+									<div class="card-body p-4">
+										<div class="d-flex">
+											<h5 class="card-title mb-9 fw-semibold">Thống kê theo
+												ngày</h5>
+											<h5 class="card-title mb-9 fw-semibold"
+												style="margin-left: 20px;" th:text="${totalRatingByDay}"></h5>
+										</div>
+										<div class="row align-items-center">
+											<div class="col-11">
+												<div class="d-flex align-items-center mb-3">
+													<span
+														class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+														<i class="ti ti-arrow-up-left text-success"></i>
+													</span>
+													<p class="text-dark me-1 fs-3 mb-0">Danh sách cơ sở:</p>
+												</div>
+												<div class="d-flex">
+													<div class="d-grid align-items-center" id="resultsContainer">
+														<div class="me-4"
+															th:each="result, iterStat : ${resultsRate}">
+															<span class="round-8 rounded-circle me-2 d-inline-block"></span>
+															<span class="fs-3 text-dark" th:text="${result[0]}"></span>:
+															<span class="fs-3 text-dark ml-2 mr-1"
+																th:text="${result[1]}"></span> <span
+																th:if="${result[1] < 50}" class="icon-class"> <i
+																class="fa-sharp fa-solid fa-triangle-exclamation fs-3"
+																style="color: #dc0909;"></i>
+															</span>
+														</div>
+													</div>
+													<!--  
+													<div class="d-grid">
+														<div th:each="resultStar1 : ${star1}">
+																1*: <span class="fs-3 text-dark fw-bold"
+																	th:text="${resultStar1[1]}"></span>
+														</div>
+													</div>
+													-->
+												</div>
+												
+											</div>
+
+											<div class="col-5">
+												<div class="d-flex justify-content-center">
+													<div id="breakup"></div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-lg-12">
+								<!-- Monthly Earnings -->
+								<div class="card">
+									<div class="card-body">
+										<div class="row alig n-items-start">
+											<div class="col-10">
+												<h5 class="card-title mb-9 fw-semibold">Thống kê theo
+													tuần</h5>
+												<h5 class="fw-semibold mb-3">
+													Từ ngày <span th:text="${firstDay}"></span> tới ngày <span
+														th:text="${lastDay}"></span>
+												</h5>
+												<div class="d-flex align-items-center pb-1"></div>
+											</div>
+										</div>
+									</div>
+									<div id="earning"></div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 d-flex align-items-stretch">
+						<div class="card w-100">
+							<div class="card-body p-4">
+								<h5 class="card-title fw-semibold mb-4">Đánh giá gần đây</h5>
+								<div class="table-responsive">
+									<!-- -->
+									<table class="table text-nowrap mb-0 align-middle">
+										<thead class="text-dark fs-4">
+											<tr>
+												<th class="border-bottom-0">
+													<h6 class="fw-semibold mb-0">Mã</h6>
+												</th>
+												<th class="border-bottom-0">
+													<h6 class="fw-semibold mb-0">Cơ sở</h6>
+												</th>
+												<th class="border-bottom-0">
+													<h6 class="fw-semibold mb-0">Đánh giá món ăn</h6>
+												</th>
+												<th class="border-bottom-0">
+													<h6 class="fw-semibold mb-0">Đánh giá phục vụ</h6>
+												</th>
+												<th class="border-bottom-0">
+													<h6 class="fw-semibold mb-0">Thời gian</h6>
+												</th>
+											</tr>
+										</thead>
+
+										<tbody>
+											<tr th:each="d, status : ${recentRate}">
+												<td class="border-bottom-0">
+													<h6 class="fw-semibold mb-0" th:text="${d.rateId}"></h6>
+												</td>
+												<td class="border-bottom-0">
+													<h6 class="fw-semibold mb-1" th:text="${d.department}"></h6>
+												</td>
+												<div th:switch="${d.valueFood}">
+													<td th:case="1"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i == 1}"></i>
+													</span></td>
+													<td th:case="2"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i <= 2}"></i>
+													</span></td>
+													<td th:case="3"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i <= 3}"></i>
+													</span></td>
+													<td th:case="4"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i <= 4}"></i>
+													</span></td>
+													<td th:case="5"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"></i>
+													</span></td>
+												</div>
+												<div th:switch="${d.valueService}">
+													<td th:case="1"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i == 1}"></i>
+													</span></td>
+													<td th:case="2"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i <= 2}"></i>
+													</span></td>
+													<td th:case="3"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i <= 3}"></i>
+													</span></td>
+													<td th:case="4"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"
+															th:if="${i <= 4}"></i>
+													</span></td>
+													<td th:case="5"><span
+														th:each="i : ${#numbers.sequence(1, 5)}"> <i
+															class="fa-solid fa-star" style="color: #FFD43B;"></i>
+													</span></td>
+												</div>
+												<td class="border-bottom-0">
+													<h6 class="fw-semibold mb-0 fs-4" th:text="${d.dateRate}"></h6>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<h5 class="card-title fw-semibold mt-2 mb-3">Chi tiết đánh
+									giá ngày hôm nay</h5>
+								<h5 class="mb-3">
+									Tổng lượt đánh giá: <span th:text="${countRating}"></span>
+								</h5>
+								<div class="d-flex">
+
+									<div class="rating-block">
+										<span>--------- Món ăn:</span>
+										<div class="mb-1">
+											+ 5 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood5}"></span>
+										</div>
+										<div class="mb-1">
+											+ 4 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood4}"></span>
+										</div>
+										<div class="mb-1">
+											+ 3 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood3}"></span>
+										</div>
+										<div class="mb-1">
+											+ 2 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood2}"></span>
+										</div>
+
+										<div class="mb-1">
+											+ 1 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingFood1}"></span>
+										</div>
+									</div>
+
+									<div class="rating-block">
+										<span>------- Phục vụ:</span>
+										<div class="mb-1">
+											+ 5 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService5}"></span>
+										</div>
+										<div class="mb-1">
+											+ 4 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService4}"></span>
+										</div>
+										<div class="mb-1">
+											+ 3 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService3}"></span>
+										</div>
+										<div class="mb-1">
+											+ 2 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService2}"></span>
+										</div>
+										<div class="mb-1">
+											+ 1 sao: <span class="star_info"> <i
+												class="fa-solid fa-star" style="color: #FFD43B;"></i>
+											</span> <span th:text="${countRatingService1}"></span>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="py-6 px-6 text-center">
+					<p class="mb-0 fs-4">
+						Design Fullstack and Developed by <label class="text-info">Trần
+							Huy Hoàng</label>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<script th:src="@{/js/system/infor_star.js}"></script>
+		<script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>
+		<script th:src="@{/js/sidebarmenu.js}"></script>
+		<script th:src="@{/js/app.min.js}"></script>
+		<script th:src="@{/libs/apexcharts/dist/apexcharts.min.js}"></script>
+		<script th:src="@{/libs/simplebar/dist/simplebar.js}"></script>
+		<script th:src="@{/js/dashboard/dashboard.js}"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	</main>
+</body>
+
+</html>

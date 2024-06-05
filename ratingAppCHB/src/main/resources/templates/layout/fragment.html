@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+			<div th:fragment="bodyLeft">
+			
+				<nav class="col-md-12 d-none d-md-block bg-light sidebar" id="sidebar">
+					<div class="sidebar-sticky">
+						<ul class="nav flex-column">
+							<li class="nav-item"><a class="nav-link active" th:href="@{/dashboard}">
+									Trang chủ </a></li>
+							<li class="nav-item"><a class="nav-link"
+								th:href="@{/home/infoRate}"> Thông tin đánh giá cơ sở </a></li>
+							<li class="nav-item"><a class="nav-link"
+								th:href="@{/home/rate}"> Mục lục... </a></li>
+						</ul>
+					</div>
+				</nav>
+				
+			</div>
+
+</body>
+</html>
