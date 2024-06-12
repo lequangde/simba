@@ -14,25 +14,27 @@ import RatingApp.com.entities.RatingStar;
 @Repository
 public interface ExcelRepository extends JpaRepository<RatingStar, Integer>{
 	
-	@Query(value = "SELECT * FROM rating_star WHERE department = :department AND SUBSTRING(date_rate, 1, 5) BETWEEN :startDate AND :endDate Order By rate_id Asc", nativeQuery = true)
+
+	@Query("SELECT rs FROM RatingStar rs WHERE department = :department AND SUBSTRING(rs.dateRate, 1, 2) BETWEEN :startDate AND :endDate AND SUBSTRING(rs.dateRate, 4, 2) = :month")
 	List<RatingStar> findByDepartmentAndDateRateBetweenOrderByRateIdAsc(
 	        @Param("department") String department, 
 	        @Param("startDate") String startDate, 
-	        @Param("endDate") String endDate
+	        @Param("endDate") String endDate,
+	        @Param("month") String month
 	        );
 
-	@Query(value = "SELECT * FROM rating_star WHERE department = :department AND SUBSTRING(date_rate, 1, 5) BETWEEN :startDate AND :endDate Order By rate_id Asc", nativeQuery = true)
+	@Query(value = "SELECT * FROM rating_star WHERE department = :department AND SUBSTRING(date_rate, 1, 6) BETWEEN :startDate AND :endDate Order By rate_id Asc", nativeQuery = true)
 	Page<RatingStar> findByDepartmentAndDateRateBetweenOrderByRateIdAscWithPageable(
 			@Param("department") String selectedCountry,
 			@Param("startDate") String startedDate, 
 			@Param("endDate") String endedDate,
 			Pageable pageable);
 	
-	@Query("SELECT r FROM RatingStar r WHERE SUBSTRING(r.dateRate, 1, 5) BETWEEN :startDate AND :endDate ORDER BY r.rateId ASC")
-	List<RatingStar> findByDepartmentAndDateRateBetweenOrderByRateIdAsc(@Param("startDate") String startedDate,@Param("endDate") String endedDate);
+	@Query("SELECT r FROM RatingStar r WHERE SUBSTRING(r.dateRate, 1, 2) BETWEEN :startDate AND :endDate AND SUBSTRING(r.dateRate, 4, 2) = :month")
+	List<RatingStar> findByDepartmentAndDateRateBetweenOrderByRateIdAsc(@Param("startDate") String startedDate,@Param("endDate") String endedDate,@Param("month") String month);
 	
 	
-
+																
 
 
 }
