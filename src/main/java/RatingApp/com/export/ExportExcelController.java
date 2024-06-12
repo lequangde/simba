@@ -49,13 +49,15 @@ public class ExportExcelController {
 		String selectedCountry = (String) httpSession.getAttribute("selectedCountry");
 		String startDate = (String) httpSession.getAttribute("startDate");
 		String endDate = (String) httpSession.getAttribute("endDate");
-		
-		
+		String month = (String) httpSession.getAttribute("month");
+		String formattedMonth = String.format("%02d", Integer.parseInt(String.valueOf(month)));		
+		System.out.println(startDate + " " + endDate);
+		System.out.println(month);
 		if(selectedCountry.equals("")) {
-			List<RatingStar> dataList1 = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(startDate, endDate);
+			List<RatingStar> dataList1 = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(startDate, endDate,formattedMonth);
 			model.addAttribute("listRating", dataList1);
 		}else {
-			List<RatingStar> dataList = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(selectedCountry, startDate, endDate);
+			List<RatingStar> dataList = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(selectedCountry, startDate, endDate,formattedMonth);
 			model.addAttribute("listRating", dataList);
 		}
 		
@@ -68,11 +70,14 @@ public class ExportExcelController {
     		) {
     	
         try {
-        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
     		String startedDate = startDate.format(formatter);
     		String endedDate = endDate.format(formatter);
     		String department = convertAddress(selectedCountry);
-    		List<RatingStar> dataList = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(selectedCountry, startedDate, endedDate); // Assuming you have a method to retrieve data
+    		LocalDate today = LocalDate.now();
+    		int month = today.getMonthValue();
+    		String formattedMonth = String.format("%02d", Integer.parseInt(String.valueOf(month)));
+    		List<RatingStar> dataList = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(selectedCountry, startedDate, endedDate,formattedMonth); // Assuming you have a method to retrieve data
     		
     		
     		
@@ -87,7 +92,7 @@ public class ExportExcelController {
             headers.setContentDispositionFormData("attachment", "baoCaoDanhGiaCHB" + department + ".xlsx");
             
             if(selectedCountry.equals("")) {
-        		List<RatingStar> dataList1 = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(startedDate, endedDate); // Assuming you have a method to retrieve data
+        		List<RatingStar> dataList1 = excelRepository.findByDepartmentAndDateRateBetweenOrderByRateIdAsc(startedDate, endedDate,formattedMonth); // Assuming you have a method to retrieve data
         		excelExporter.exportToExcel(dataList1, outputStream);
         		headers.setContentDispositionFormData("attachment", "baoCaoDanhGiaCHBTongHop.xlsx");
     		}
@@ -106,13 +111,16 @@ public class ExportExcelController {
 			@RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize,
     		Model model,HttpSession httpSession
     		) {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-    	
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+    	LocalDate today = LocalDate.now();
+		int month = today.getMonthValue();
+		String formattedMonth = String.format("%02d", Integer.parseInt(String.valueOf(month)));		
 		String startedDate = startDate.format(formatter);
 		String endedDate = endDate.format(formatter);
     	httpSession.setAttribute("selectedCountry", selectedCountry);
     	httpSession.setAttribute("startDate", startedDate);
     	httpSession.setAttribute("endDate", endedDate);
+    	httpSession.setAttribute("month", formattedMonth);
 		return "redirect:/excel/reported";
     }
     
